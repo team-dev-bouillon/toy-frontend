@@ -1,14 +1,15 @@
 import React from 'react';
-import Header from './header';
+import Header, { MenuType } from './header';
 
 interface Props {
     children: React.ReactNode;
+    activeMenu?: MenuType;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, activeMenu }: Props) => {
     return (
         <>
-            <Header />
+            <Header active={activeMenu} />
             <main>{children}</main>
             <footer></footer>
         </>

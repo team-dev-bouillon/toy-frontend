@@ -6,7 +6,7 @@ const IndexPage: NextPage = () => {
     return (
         <>
             <Head>채용 정보 | 원티드</Head>
-            <Layout>
+            <Layout activeMenu="jobsfeeds">
                 <section></section>
             </Layout>
         </>
