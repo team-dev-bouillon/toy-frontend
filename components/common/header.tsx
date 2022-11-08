@@ -8,20 +8,17 @@ interface Props {
     active?: MenuType;
 }
 
-const Header = ({ active }: Props) => {
-    const menus: { title: string; link: string; menuType: MenuType }[] = useMemo(
-        () => [
-            { title: '채용', link: '#', menuType: 'jobsfeeds' },
-            { title: '이벤트', link: '#', menuType: 'events' },
-            { title: '직군별 연봉', link: '#', menuType: 'salary' },
-            { title: '이력서', link: '#', menuType: 'resume' },
-            { title: '커뮤니티', link: '#', menuType: 'community' },
-            { title: '프리랜서', link: '#', menuType: 'freelancer' },
-            { title: 'AI 합격예측', link: '#', menuType: 'aiscore' },
-        ],
-        []
-    );
+const menus: { title: string; link: string; menuType: MenuType }[] = [
+    { title: '채용', link: '/', menuType: 'jobsfeeds' },
+    { title: '이벤트', link: '/', menuType: 'events' },
+    { title: '직군별 연봉', link: '/', menuType: 'salary' },
+    { title: '이력서', link: '/', menuType: 'resume' },
+    { title: '커뮤니티', link: '/', menuType: 'community' },
+    { title: '프리랜서', link: '/', menuType: 'freelancer' },
+    { title: 'AI 합격예측', link: '/', menuType: 'aiscore' },
+];
 
+const Header = ({ active }: Props) => {
     return (
         <>
             <header className="fixed top-0 left-0 right-0 z-800 h-50px shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
