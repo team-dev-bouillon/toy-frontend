@@ -18,6 +18,11 @@ module.exports = {
         'semi-bold':['Pretendard-Semibold'],
         'thin':['Pretendard-Thin'],
       },
+      colors:{
+          'black':'#000',
+          'white':'#fff',
+          'blue1':'#36f',
+      },
     },
   },
   plugins: [],
