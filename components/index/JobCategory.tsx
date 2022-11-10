@@ -61,7 +61,8 @@ export default function JobCategory() {
             <button
                 type="button"
                 className="flex items-center gap-2"
-                onClick={() => {
+                onMouseDown={e => {
+                    e.stopPropagation();
                     setIsOpen(isOpen => !isOpen);
                 }}
             >
