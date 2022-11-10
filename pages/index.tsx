@@ -9,7 +9,7 @@ const IndexPage: NextPage = () => {
         <>
             <Head>채용 정보 | 원티드</Head>
             <Layout activeMenu="jobsfeeds">
-                <section className="max-x-[1060px] mx-auto md:mx-auto md:w-[90%] lg:mx-auto lg:w-[90%] xl:mx-auto xl:w-[87.72%]">
+                <section className="max-w-[1060px] mx-auto pt-[40px] md:mx-auto md:w-[90%] lg:mx-auto lg:w-[90%] xl:mx-auto xl:w-[87.72%] sm:pt-[17px]">
                     <div className="relative flex gap-6 items-center">
                         <h1>
                             <JobGroup />

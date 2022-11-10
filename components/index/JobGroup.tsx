@@ -40,7 +40,7 @@ export default function JobGroup({}: Props) {
                     setIsOpen(isOpen => !isOpen);
                 }}
             >
-                <span className="text-2xl font-bold text-[#333] sm:text-[16px] sm:max-w-[160px] sm:w-full sm:truncate">전체</span>
+                <span className="text-2xl font-bold text-[#333] sm:text-[16px] sm:max-w-[160px] sm:w-full sm:pl-[17px] sm:truncate">전체</span>
                 <span
                     className={clsx(
                         'relative border rounded-full bg-[#fff] w-[26px] h-[26px] sm:min-w-[20px] sm:h-[20px] transition-all delay-0 duration-300 hover:border-[#767676]',
