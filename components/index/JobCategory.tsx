@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { IoIosRefresh } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
-
-interface Props {}
+import useOutsideClick from 'hooks/useOutsideClick';
 
 const LIST = [
     { id: '1', title: '개발 전체' },
@@ -48,8 +47,14 @@ const LIST = [
     { id: '38', title: 'CIO,Chief Information Officer' },
 ];
 
-export default function JobCategory({}: Props) {
+export default function JobCategory() {
+    const sectionRef = useRef<HTMLDivElement>(null);
+
     const [isOpen, setIsOpen] = useState(false);
+
+    useOutsideClick(sectionRef, () => {
+        setIsOpen(false);
+    });
 
     return (
         <>
@@ -82,6 +87,7 @@ export default function JobCategory({}: Props) {
                 </span>
             </button>
             <section
+                ref={sectionRef}
                 className={clsx('absolute shadow-md z-50', {
                     'max-w-[910px] w-[calc(100%-140px)] top-[40px] left-0 right-0 bottom-0 overflow-auto h-fit bg-[#fff] border border-[#e1e2e3] rounded-[5px] box-border sm:fixed sm:top-0 sm:left-0 sm:w-screen sm:h-screen sm:z-[100] sm:rounded-none':
                         isOpen,

@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
-
-interface Props {}
+import useOutsideClick from 'hooks/useOutsideClick';
 
 const LIST = [
     { link: '/1', title: '전체' },
@@ -28,8 +27,14 @@ const LIST = [
     { link: '/20', title: '공공・복지' },
 ];
 
-export default function JobGroup({}: Props) {
+export default function JobGroup() {
+    const sectionRef = useRef<HTMLDivElement>(null);
+
     const [isOpen, setIsOpen] = useState(false);
+
+    useOutsideClick(sectionRef, () => {
+        setIsOpen(false);
+    });
 
     return (
         <>
@@ -60,6 +65,7 @@ export default function JobGroup({}: Props) {
                 </span>
             </button>
             <section
+                ref={sectionRef}
                 className={clsx('absolute shadow-md z-50', {
                     'max-w-[190px] top-[40px] left-0 right-0 bottom-0 overflow-auto h-[70vh] bg-[#fff] border border-[#e1e2e3] rounded-[5px] py-[15px] sm:max-w-[160px] sm:top-[30px] sm:py-[12px] box-border':
                         isOpen,
