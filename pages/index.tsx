@@ -1,3 +1,16 @@
-export default function Home() {
-    return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
-}
+import { NextPage } from 'next';
+import Head from 'next/head';
+import Layout from 'components/common/layout';
+
+const IndexPage: NextPage = () => {
+    return (
+        <>
+            <Head>채용 정보 | 원티드</Head>
+            <Layout activeMenu="jobsfeeds">
+                <section></section>
+            </Layout>
+        </>
+    );
+};
+
+export default IndexPage;
