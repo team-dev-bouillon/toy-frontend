@@ -22,7 +22,8 @@ module.exports = {
           'black':'#000',
           'white':'#fff',
           'blue1':'#36f',
-      },
+          'warn':'#fe415c',
+      }
     },
   },
   plugins: [],

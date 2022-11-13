@@ -1,9 +1,9 @@
 import AuthLayout from 'components/common/authLayout';
-import RHFInput from 'components/common/rhfInput';
+import RHFInput, { RHFInputTypes } from 'components/common/rhfInput';
 import Image from 'next/image';
 
 import authHeaderLogo from 'public/assets/auth-header-logo.svg';
-import { Path, useForm, UseFormRegister } from 'react-hook-form';
+import { Path, RegisterOptions, useForm, UseFormRegister } from 'react-hook-form';
 
 export default function SignupPage() {
     return (
@@ -22,12 +22,6 @@ export default function SignupPage() {
     );
 }
 
-type SignupInputTypes = {
-    register: UseFormRegister<TFieldValues>;
-    name: Path<TFieldValues>;
-    className?: string;
-};
-
 type TFieldValues = {
     email: string;
     username: string;
@@ -38,54 +32,111 @@ type TFieldValues = {
     isAgree: false;
 };
 
-const SignupPlaceHolder = {
-    email: '이메일을 입력해주세요.',
-    username: '이름을 입력해주세요.',
-    password: '비밀번호를 입력해주세요.',
-    passwordConfirm: '비밀번호를 다시 한번 입력해주세요.',
-    phone: '(예시)01013245768',
-    phoneConfirm: '인증번호를 입력해주세요',
-    isAgree: '',
+const fieldOptions = {
+    email: {
+        placeholder: '이메일을 입력해주세요.',
+        options: {
+            required: { value: true, message: '이메일을 입력해주세요' },
+        },
+    },
+    username: {
+        placeholder: '이름을 입력해주세요.',
+        options: {
+            required: { value: true, message: '이름을 입력해주세요' },
+        },
+    },
+    password: {
+        placeholder: '비밀번호를 입력해주세요.',
+        options: {
+            required: { value: true, message: '비밀번호를 입력해주세요' },
+        },
+    },
+    passwordConfirm: {
+        placeholder: '비밀번호를 다시 한번 입력해주세요.',
+        options: {
+            required: { value: true, message: '비밀번호를 다시 입력해주세요' },
+        },
+    },
+    phone: {
+        placeholder: '(예시)01013245768',
+        options: {
+            required: { value: true, message: '번호를 입력해주세요' },
+        },
+    },
+    phoneConfirm: {
+        placeholder: '인증번호를 입력해주세요',
+        options: {
+            required: { value: true, message: '인증번호를 입력해주세요' },
+        },
+    },
+    isAgree: {
+        placeholder: '',
+        options: {
+            required: true,
+        },
+    },
 };
 
 function SignupForm() {
-    const { register } = useForm<TFieldValues>();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<TFieldValues>();
+
+    function onSubmit(data: TFieldValues) {
+        console.log(data);
+    }
 
     return (
-        <form className="flex flex-col w-full">
+        <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
             <Label name="이메일" />
-            <SignupInput register={register} name="email" />
+            <SignupInput register={register} name="email" errors={errors} />
             <Label name="이름" />
-            <SignupInput register={register} name="username" />
+            <SignupInput register={register} name="username" errors={errors} />
             <Label name="휴대폰 번호" />
             <div className="flex items-center gap-[10px] w-full">
-                <SignupInput register={register} name="phone" className="w-full" />
-                <button className="px-[15px] h-[50px] bg-blue1 text-white rounded w-[190px] text-[16px]">인증번호 받기</button>
+                <SignupInput register={register} name="phone" className="w-full" errors={errors} />
+                <button
+                    type="button"
+                    onClick={() => {
+                        console.log('인증');
+                    }}
+                    className="mb-[8px] px-[15px] h-[50px] bg-blue1 text-white rounded w-[190px] text-[16px]"
+                >
+                    인증번호 받기
+                </button>
             </div>
-            <SignupInput register={register} name="phoneConfirm" className="mt-[10px]" />
+            <SignupInput register={register} name="phoneConfirm" className="mt-[10px]" disabled={true} errors={errors} />
             <Label name="비밀번호" />
-            <SignupInput register={register} name="password" />
-            <SignupInput register={register} name="passwordConfirm" className="mt-[10px]" />
+            <SignupInput register={register} name="password" errors={errors} />
+            <SignupInput register={register} name="passwordConfirm" className="mt-[10px]" errors={errors} />
             <p className="text-[#888] text-[13px] mt-[5px]">영문 대소문자, 숫자, 특수문자를 3가지 이상으로 조합해 8자 이상 16자 이하로 입력해주세요.</p>
             <div className="flex gap-[10px] mt-[20px]">
-                <input type="checkbox" id="check" />
+                <input {...register('isAgree')} type="checkbox" id="check" />
                 <label htmlFor="check" className="cursor-pointer">
                     개인정보 수집 동의
                 </label>
             </div>
-            <button className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">가입하기</button>
+            <button type="submit" onSubmit={handleSubmit(onSubmit)} className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">
+                가입하기
+            </button>
         </form>
     );
 }
 
-function SignupInput({ register, name, className }: SignupInputTypes) {
+function SignupInput({ register, name, className, errors, ...props }: RHFInputTypes<TFieldValues>) {
     return (
         <div className={className}>
             <RHFInput
                 register={register}
                 name={name}
-                className="w-full h-[50px] px-[12px] text-[#333] border border-[#e1e2e3] rounded placeholder:text-[#e1e2e3]"
-                placeholder={SignupPlaceHolder[name]}
+                className="mb-[8px] w-full h-[50px] px-[12px] text-[#333] border border-[#e1e2e3] rounded placeholder:text-[#e1e2e3]"
+                helperClassName="mb-[8px]"
+                placeholder={fieldOptions[name].placeholder}
+                options={fieldOptions[name].options}
+                errors={errors}
+                {...props}
             />
         </div>
     );
