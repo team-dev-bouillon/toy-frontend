@@ -11,13 +11,9 @@ const IndexPage: NextPage = () => {
             <Layout activeMenu="jobsfeeds">
                 <section className="max-w-[1060px] mx-auto pt-[40px] md:mx-auto md:w-[90%] lg:mx-auto lg:w-[90%] xl:mx-auto xl:w-[87.72%] sm:pt-[17px]">
                     <div className="relative flex gap-6 items-center">
-                        <h1>
-                            <JobGroup />
-                        </h1>
+                        <JobGroup key="job-group" link="/" />
                         <p className="text-[28px] text-[#ececec] pb-1 leading-none font-thin">|</p>
-                        <h2>
-                            <JobCategory />
-                        </h2>
+                        <JobCategory key="job-category" link="/" />
                     </div>
                 </section>
             </Layout>
