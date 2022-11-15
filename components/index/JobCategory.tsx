@@ -11,26 +11,21 @@ interface Props {
 }
 
 export default function JobCategory({ link, category }: Props) {
-    const sectionRef = useRef(null);
+    const wrapperRef = useRef(null);
 
     const [isOpen, setIsOpen] = useState(false);
 
-    useOutsideClick(sectionRef, () => setIsOpen(false));
+    const onClickOpen = () => setIsOpen(isOpen => !isOpen);
+
+    useOutsideClick(wrapperRef, () => setIsOpen(false));
 
     return (
         <>
             {link === '/' ? (
                 <span className="text-2xl font-normal text-[#aaa] sm:text-[13px] sm:leading-[22px]">직군을 선택해주세요.</span>
             ) : (
-                <>
-                    <button
-                        type="button"
-                        className="flex items-center gap-2"
-                        onClick={e => {
-                            e.stopPropagation();
-                            setIsOpen(isOpen => !isOpen);
-                        }}
-                    >
+                <div ref={wrapperRef}>
+                    <button type="button" className="flex items-center gap-2" onClick={onClickOpen}>
                         <span className="truncate text-2xl font-normal text-[#333] sm:text-[13px] sm:font-bold sm:max-w-[160px] sm:w-full sm:truncate">
                             {category}
                         </span>
@@ -53,7 +48,6 @@ export default function JobCategory({ link, category }: Props) {
                         </span>
                     </button>
                     <section
-                        ref={sectionRef}
                         className={clsx(
                             'absolute shadow-md z-49 max-w-[910px] w-[calc(100%-140px)] top-[40px] left-0 right-0 bottom-0 overflow-auto h-fit bg-[#fff] border border-[#e1e2e3] rounded-[5px] box-border sm:fixed sm:top-0 sm:left-0 sm:w-screen sm:h-screen sm:z-[100] sm:rounded-none',
                             {
@@ -109,7 +103,7 @@ export default function JobCategory({ link, category }: Props) {
                             </button>
                         </div>
                     </section>
-                </>
+                </div>
             )}
         </>
     );

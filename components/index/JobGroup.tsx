@@ -10,22 +10,17 @@ interface Props {
 }
 
 export default function JobGroup({ link }: Props) {
-    const sectionRef = useRef(null);
+    const wrapperRef = useRef(null);
 
     const [isOpen, setIsOpen] = useState(false);
 
-    useOutsideClick(sectionRef, () => setIsOpen(false));
+    const onClickOpen = () => setIsOpen(isOpen => !isOpen);
+
+    useOutsideClick(wrapperRef, () => setIsOpen(false));
 
     return (
-        <>
-            <button
-                type="button"
-                className="flex items-center gap-2"
-                onClick={e => {
-                    e.stopPropagation();
-                    setIsOpen(isOpen => !isOpen);
-                }}
-            >
+        <div ref={wrapperRef}>
+            <button type="button" className="flex items-center gap-2" onClick={onClickOpen}>
                 <span className="text-2xl font-bold text-[#333] sm:text-[16px] sm:max-w-[160px] sm:w-full sm:pl-[17px] sm:truncate">
                     {JOB_GROUP_LIST.find(item => item.link === link)?.title}
                 </span>
@@ -48,7 +43,6 @@ export default function JobGroup({ link }: Props) {
                 </span>
             </button>
             <section
-                ref={sectionRef}
                 className={clsx('absolute shadow-md z-50', {
                     'max-w-[190px] top-[40px] left-0 right-0 bottom-0 overflow-auto h-[70vh] bg-[#fff] border border-[#e1e2e3] rounded-[5px] py-[15px] sm:max-w-[160px] sm:top-[30px] sm:py-[12px] box-border':
                         isOpen,
@@ -67,6 +61,6 @@ export default function JobGroup({ link }: Props) {
                     })}
                 </ul>
             </section>
-        </>
+        </div>
     );
 }
