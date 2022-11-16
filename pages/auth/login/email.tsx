@@ -1,3 +1,4 @@
+import pages from 'common/pages';
 import AuthLayout from 'components/common/authLayout';
 import RHFInput from 'components/common/rhfInput';
 import Image from 'next/image';
@@ -23,7 +24,7 @@ export default function EmailLoginPage() {
                     취업, 이직, 커리어 콘텐츠까지 <br /> 커리어 성장의 모든 것
                 </h2>
                 <LoginForm />
-                <Link href="/auth/signup" className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
+                <Link href={pages.signup} className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
                     회원가입하기
                 </Link>
             </main>
