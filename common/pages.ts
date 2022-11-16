@@ -13,4 +13,8 @@ enum pages {
     signup = '/auth/signup',
 }
 
+export function combineStrings({ list }: { list: string[] }): string {
+    return list.reduce((prev, cur) => (prev += cur));
+}
+
 export default pages;
