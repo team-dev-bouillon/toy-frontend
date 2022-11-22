@@ -1,7 +1,7 @@
-import pages from 'common/pages';
+import { pages, useMoveToPage } from 'common/pages';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 export type MenuType = 'jobsfeeds' | 'events' | 'salary' | 'resume' | 'community' | 'freelancer' | 'aiscore';
 
@@ -20,7 +20,8 @@ const menus: { title: string; link: string; menuType: MenuType }[] = [
 ];
 
 const Header = ({ active }: Props) => {
-    const router = useRouter();
+    const goAuth = useMoveToPage(pages.auth);
+
     return (
         <>
             <header className="fixed top-0 left-0 right-0 z-800 h-50px shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
@@ -72,7 +73,7 @@ const Header = ({ active }: Props) => {
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            router.push(pages.auth);
+                                            goAuth();
                                         }}
                                         className="h-full text-[14px] text-[#333] font-semibold sm:hidden"
                                     >
