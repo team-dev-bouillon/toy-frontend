@@ -10,9 +10,21 @@ export type InputProps = {
     readOnly?: boolean;
     validation?: RegisterOptions;
     helperClassName?: string;
+    errorClassName?: string;
 } & React.ComponentPropsWithoutRef<'input'>;
 
-export default function Input({ id, label, placeholder = '', helperText, type = 'text', readOnly = false, validation, helperClassName, ...rest }: InputProps) {
+export default function Input({
+    id,
+    label,
+    placeholder = '',
+    helperText,
+    type = 'text',
+    readOnly = false,
+    validation,
+    helperClassName,
+    errorClassName,
+    ...rest
+}: InputProps) {
     const {
         register,
         formState: { errors },
@@ -46,8 +58,8 @@ export default function Input({ id, label, placeholder = '', helperText, type = 
                 className={getClassName()}
                 placeholder={placeholder}
             />
-            <ErrorMessage errors={errors} name={id} render={({ message }) => <p className={`text-warn text-[13px] ${helperClassName}`}>{message}</p>} />
-            <div>{helperText && <p className="text-[#888] text-[13px]">{helperText}</p>}</div>
+            <ErrorMessage errors={errors} name={id} render={({ message }) => <p className={`text-warn text-[13px] ${errorClassName}`}>{message}</p>} />
+            <div>{helperText && <p className={`text-[#888] text-[13px] ${helperClassName}`}>{helperText}</p>}</div>
         </div>
     );
 }
