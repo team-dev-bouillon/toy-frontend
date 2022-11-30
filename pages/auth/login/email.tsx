@@ -1,15 +1,12 @@
+import { pages } from 'common/pages';
 import AuthLayout from 'components/common/authLayout';
-import RHFInput from 'components/common/rhfInput';
+
+import Input, { InputProps } from 'components/common/Input';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import authHeaderLogo from 'public/assets/auth-header-logo.svg';
-import { Path, useForm, UseFormRegister } from 'react-hook-form';
-
-type TFieldValues = {
-    email: string;
-    password: string;
-};
+import { FormProvider, useForm } from 'react-hook-form';
 
 export default function EmailLoginPage() {
     return (
@@ -23,7 +20,8 @@ export default function EmailLoginPage() {
                     취업, 이직, 커리어 콘텐츠까지 <br /> 커리어 성장의 모든 것
                 </h2>
                 <LoginForm />
-                <Link href="/auth/signup" className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
+
+                <Link href={pages.signup} className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
                     회원가입하기
                 </Link>
             </main>
@@ -31,43 +29,44 @@ export default function EmailLoginPage() {
     );
 }
 
-type LoginInputTypes = {
-    register: UseFormRegister<TFieldValues>;
-    name: Path<TFieldValues>;
+enum FieldNames {
+    //form에서 사용할 column들을 등록합니다.
+    email = 'email',
+    password = 'password',
+}
+
+const fieldOptions: { [key in FieldNames]: InputProps } = {
+    //각 input에 들어갈 props들을 정의합니다.
+    email: {
+        id: 'email',
+        label: '이메일',
+        validation: {
+            required: '입력하세요!',
+        },
+    },
+    password: {
+        id: 'password',
+        label: '패스워드',
+        validation: {
+            required: '입력하세요!',
+        },
+    },
 };
 
-enum LoginLabel {
-    email = '이메일',
-    password = '비밀번호',
-}
-
-enum LoginPlaceHolder {
-    email = '이메일을 입력해주세요.',
-    password = '패스워드를 입력해주세요.',
-}
-
 function LoginForm() {
-    const { register } = useForm<TFieldValues>();
+    const form = useForm();
+
+    function onSubmit(foo: any) {
+        console.log(foo);
+    }
 
     return (
-        <form className="flex flex-col w-full">
-            <LoginInput register={register} name="email" />
-            <LoginInput register={register} name="password" />
-            <button className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">이메일로 로그인하기</button>
-        </form>
-    );
-}
-
-function LoginInput({ register, name }: LoginInputTypes) {
-    return (
-        <div>
-            <span className=" inline-block text-[#888] mt-[17px] mb-[7px]">{LoginLabel[name]}</span>
-            <RHFInput
-                register={register}
-                name={name}
-                className="w-full h-[50px] px-[12px] text-[#333] border border-[#e1e2e3] rounded placeholder:text-[#e1e2e3]"
-                placeholder={LoginPlaceHolder[name]}
-            />
-        </div>
+        <FormProvider {...form}>
+            <form className="flex flex-col w-full" onSubmit={form.handleSubmit(onSubmit)}>
+                <Input {...fieldOptions.email} />
+                <Input {...fieldOptions.password} />
+                <button className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">이메일로 로그인하기</button>
+            </form>
+        </FormProvider>
     );
 }

@@ -1,9 +1,9 @@
 import AuthLayout from 'components/common/authLayout';
-import RHFInput, { RHFInputTypes } from 'components/common/rhfInput';
+import Input, { InputProps } from 'components/common/Input';
 import Image from 'next/image';
 
 import authHeaderLogo from 'public/assets/auth-header-logo.svg';
-import { Path, RegisterOptions, useForm, UseFormRegister } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 export default function SignupPage() {
     return (
@@ -22,126 +22,132 @@ export default function SignupPage() {
     );
 }
 
-type TFieldValues = {
-    email: string;
-    username: string;
-    password: string;
-    passwordConfirm: string;
-    phone: string;
-    phoneConfirm: string;
-    isAgree: false;
-};
+enum FieldNames {
+    //form에서 사용할 column들을 등록합니다.
+    email = 'email',
+    username = 'username',
+    password = 'password',
+    passwordConfirm = 'passwordConfirm',
+    phone = 'phone',
+    phoneConfirm = 'phoneConfirm',
+    isAgree = 'isAgree',
+}
 
-const fieldOptions = {
+const fieldOptions: { [key in FieldNames]: InputProps } = {
+    //각 input에 들어갈 props들을 정의합니다.
     email: {
-        placeholder: '이메일을 입력해주세요.',
-        options: {
-            required: { value: true, message: '이메일을 입력해주세요' },
+        id: 'email',
+        label: '이메일',
+        placeholder: '이메일을 입력해주세요',
+        validation: {
+            required: '이메일을 입력해주세요',
         },
     },
     username: {
-        placeholder: '이름을 입력해주세요.',
-        options: {
-            required: { value: true, message: '이름을 입력해주세요' },
+        id: 'username',
+        label: '이름',
+        placeholder: '이름을 입력해주세요',
+
+        validation: {
+            required: '이름을 입력해주세요',
         },
     },
     password: {
-        placeholder: '비밀번호를 입력해주세요.',
-        options: {
-            required: { value: true, message: '비밀번호를 입력해주세요' },
+        id: 'password',
+        label: '비밀번호',
+        placeholder: '비밀번호를 입력해주세요',
+
+        validation: {
+            required: '비밀번호를 입력해주세요',
         },
     },
     passwordConfirm: {
-        placeholder: '비밀번호를 다시 한번 입력해주세요.',
-        options: {
-            required: { value: true, message: '비밀번호를 다시 입력해주세요' },
+        id: 'passwordConfirm',
+        label: '',
+        placeholder: '비밀번호를 다시 한번 입력해주세요',
+        validation: {
+            required: '비밀번호를 다시 한번 입력해주세요',
         },
     },
     phone: {
+        id: 'phone',
+        label: '휴대폰 번호',
         placeholder: '(예시)01013245768',
-        options: {
-            required: { value: true, message: '번호를 입력해주세요' },
+
+        validation: {
+            required: '번호를 입력해주세요',
         },
     },
     phoneConfirm: {
+        id: 'phoneConfirm',
+        label: '',
         placeholder: '인증번호를 입력해주세요',
-        options: {
-            required: { value: true, message: '인증번호를 입력해주세요' },
+        disabled: true,
+        validation: {
+            required: '인증번호를 입력해주세요',
         },
     },
     isAgree: {
-        placeholder: '',
-        options: {
-            required: true,
+        type: 'checkbox',
+        id: 'isAgree',
+        label: '',
+        validation: {
+            required: '개인정보 수집에 동의해주세요',
         },
     },
 };
 
 function SignupForm() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<TFieldValues>();
+    const form = useForm();
 
-    function onSubmit(data: TFieldValues) {
+    function onSubmit(data: any) {
         console.log(data);
     }
 
+    console.log(form.formState.errors[fieldOptions.phone.id]);
+
     return (
-        <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
-            <Label name="이메일" />
-            <SignupInput register={register} name="email" errors={errors} />
-            <Label name="이름" />
-            <SignupInput register={register} name="username" errors={errors} />
-            <Label name="휴대폰 번호" />
-            <div className="flex items-center gap-[10px] w-full">
-                <SignupInput register={register} name="phone" className="w-full" errors={errors} />
-                <button
-                    type="button"
-                    onClick={() => {
-                        console.log('인증');
-                    }}
-                    className="mb-[8px] px-[15px] h-[50px] bg-blue1 text-white rounded w-[190px] text-[16px]"
-                >
-                    인증번호 받기
+        <FormProvider {...form}>
+            <form className="flex flex-col w-full" onSubmit={form.handleSubmit(onSubmit)}>
+                <Input {...fieldOptions.email} />
+                <Input {...fieldOptions.username} />
+                <div className="flex items-center gap-[10px] w-full">
+                    <Input
+                        {...fieldOptions.phone}
+                        className="w-full"
+                        inputRightComponent={
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    console.log('인증');
+                                }}
+                                className="ml-[10px] px-[15px] h-[50px] bg-blue1 text-white rounded w-[190px] text-[16px]"
+                            >
+                                인증번호 받기
+                            </button>
+                        }
+                    />
+                </div>
+                <Input {...fieldOptions.phoneConfirm} />
+                <Input {...fieldOptions.password} />
+                <Input {...fieldOptions.passwordConfirm} />
+
+                <p className="text-[#888] text-[13px] mt-[5px]">영문 대소문자, 숫자, 특수문자를 3가지 이상으로 조합해 8자 이상 16자 이하로 입력해주세요.</p>
+                <div className="mt-[28px]">
+                    <Input
+                        {...fieldOptions.isAgree}
+                        className="w-min max-h-[10px]"
+                        inputRightComponent={
+                            <label htmlFor={fieldOptions.isAgree.id} className="ml-[10px] cursor-pointer w-full">
+                                개인정보 수집 동의
+                            </label>
+                        }
+                    />
+                </div>
+                <button type="submit" onSubmit={form.handleSubmit(onSubmit)} className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">
+                    가입하기
                 </button>
-            </div>
-            <SignupInput register={register} name="phoneConfirm" className="mt-[10px]" disabled={true} errors={errors} />
-            <Label name="비밀번호" />
-            <SignupInput register={register} name="password" errors={errors} />
-            <SignupInput register={register} name="passwordConfirm" className="mt-[10px]" errors={errors} />
-            <p className="text-[#888] text-[13px] mt-[5px]">영문 대소문자, 숫자, 특수문자를 3가지 이상으로 조합해 8자 이상 16자 이하로 입력해주세요.</p>
-            <div className="flex gap-[10px] mt-[20px]">
-                <input {...register('isAgree')} type="checkbox" id="check" />
-                <label htmlFor="check" className="cursor-pointer">
-                    개인정보 수집 동의
-                </label>
-            </div>
-            <button type="submit" onSubmit={handleSubmit(onSubmit)} className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">
-                가입하기
-            </button>
-        </form>
+            </form>
+        </FormProvider>
     );
-}
-
-function SignupInput({ register, name, className, errors, ...props }: RHFInputTypes<TFieldValues>) {
-    return (
-        <div className={className}>
-            <RHFInput
-                register={register}
-                name={name}
-                className="mb-[8px] w-full h-[50px] px-[12px] text-[#333] border border-[#e1e2e3] rounded placeholder:text-[#e1e2e3]"
-                helperClassName="mb-[8px]"
-                placeholder={fieldOptions[name].placeholder}
-                options={fieldOptions[name].options}
-                errors={errors}
-                {...props}
-            />
-        </div>
-    );
-}
-
-function Label({ name }: { name: string }) {
-    return <span className=" inline-block text-[#888] mt-[17px] mb-[7px]">{name}</span>;
 }

@@ -1,3 +1,5 @@
+import { pages, useMoveToPage } from 'common/pages';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -18,6 +20,8 @@ const menus: { title: string; link: string; menuType: MenuType }[] = [
 ];
 
 const Header = ({ active }: Props) => {
+    const goAuth = useMoveToPage(pages.auth);
+
     return (
         <>
             <header className="fixed top-0 left-0 right-0 z-800 h-50px shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
@@ -66,7 +70,13 @@ const Header = ({ active }: Props) => {
                         <aside>
                             <ul className="flex items-center md:h-[50px] sm:h-[50px] sm:pr-[20px]">
                                 <li className="md:hidden sm:hidden">
-                                    <button type="button" className="h-full text-[14px] text-[#333] font-semibold sm:hidden">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            goAuth();
+                                        }}
+                                        className="h-full text-[14px] text-[#333] font-semibold sm:hidden"
+                                    >
                                         회원가입/로그인
                                     </button>
                                 </li>
