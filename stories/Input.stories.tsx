@@ -1,7 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Input, { InputProps } from '../components/common/rhfInput2';
+import Input, { InputProps } from '../components/common/Input';
 import { withRHF } from './withRTF';
 
 const schema = yup

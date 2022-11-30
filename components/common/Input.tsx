@@ -1,4 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { ReactNode } from 'react';
 import { useFormContext, RegisterOptions } from 'react-hook-form';
 
 export type InputProps = {
@@ -11,6 +12,7 @@ export type InputProps = {
     validation?: RegisterOptions;
     helperClassName?: string;
     errorClassName?: string;
+    inputRightComponent?: ReactNode;
 } & React.ComponentPropsWithoutRef<'input'>;
 
 export default function Input({
@@ -21,8 +23,10 @@ export default function Input({
     type = 'text',
     readOnly = false,
     validation,
+    className,
     helperClassName,
     errorClassName,
+    inputRightComponent,
     ...rest
 }: InputProps) {
     const {
@@ -31,7 +35,7 @@ export default function Input({
     } = useFormContext();
 
     function getClassName(): string {
-        let result = 'mb-[10px] w-full px-[12px] h-[50px] min-h-[50px] rounded-[5px] outline-none text-[16px]';
+        let result = `w-full px-[12px] h-[50px] rounded-[5px] outline-none text-[16px] ${className}`;
 
         if (readOnly) result += ' ' + 'bg-[#f2f4f7] cursor-not-allowed ';
         else result += ' ' + 'text-[#333] border border-[#e1e2e3] focus:border-blue1';
@@ -48,18 +52,21 @@ export default function Input({
                     </label>
                 </div>
             ) : null}
-            <input
-                {...register(id, validation)}
-                {...rest}
-                type={type}
-                name={id}
-                id={id}
-                readOnly={readOnly}
-                className={getClassName()}
-                placeholder={placeholder}
-            />
-            <ErrorMessage errors={errors} name={id} render={({ message }) => <p className={`text-warn text-[13px] ${errorClassName}`}>{message}</p>} />
-            <div>{helperText && <p className={`text-[#888] text-[13px] ${helperClassName}`}>{helperText}</p>}</div>
+            <div className="flex items-center mb-[8px]">
+                <input
+                    {...register(id, validation)}
+                    {...rest}
+                    type={type}
+                    name={id}
+                    id={id}
+                    readOnly={readOnly}
+                    className={getClassName()}
+                    placeholder={placeholder}
+                />
+                {inputRightComponent ?? null}
+            </div>
+            <ErrorMessage errors={errors} name={id} render={({ message }) => <p className={`text-warn text-[13px] mb-[8px] ${errorClassName}`}>{message}</p>} />
+            <div>{helperText && <p className={`text-[#888] mb-[10px] text-[13px] ${helperClassName}`}>{helperText}</p>}</div>
         </div>
     );
 }

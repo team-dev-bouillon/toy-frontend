@@ -1,7 +1,7 @@
 import { pages } from 'common/pages';
 import AuthLayout from 'components/common/authLayout';
 
-import Input, { InputProps } from 'components/common/rhfInput2';
+import Input, { InputProps } from 'components/common/Input';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -21,19 +21,13 @@ export default function EmailLoginPage() {
                 </h2>
                 <LoginForm />
 
-                <Link href={pages.auth} className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
+                <Link href={pages.signup} className="inline-block mt-[5px] mb-[15px] text-[12px] text-[#939393] border-b">
                     회원가입하기
                 </Link>
             </main>
         </AuthLayout>
     );
 }
-
-/**
- * 하위부터 react-hook-form을 리팩토링 한 내용입니다.
- * FormProvider 사용으로 register props drilling을 방지하였습니다.
- * 각 인풋 안에 들어갈 내용들을 깔끔하게 정리하여 사용했습니다.
- */
 
 enum FieldNames {
     //form에서 사용할 column들을 등록합니다.
@@ -67,21 +61,12 @@ function LoginForm() {
     }
 
     return (
-        // FormProvider로 감싸주기만하면 상위에서 register을 선언하여 하위 컴포넌트로 보내는 props drilling을 피할 수 있습니다.
         <FormProvider {...form}>
             <form className="flex flex-col w-full" onSubmit={form.handleSubmit(onSubmit)}>
-                <NestedComponent />
+                <Input {...fieldOptions.email} />
+                <Input {...fieldOptions.password} />
                 <button className="bg-blue1 w-full h-[50px] rounded-full text-white mt-[30px] mb-[10px]">이메일로 로그인하기</button>
             </form>
         </FormProvider>
-    );
-}
-
-function NestedComponent() {
-    return (
-        <>
-            <Input {...fieldOptions.email} />
-            <Input {...fieldOptions.password} />
-        </>
     );
 }
